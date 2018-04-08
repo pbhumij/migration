@@ -9,11 +9,11 @@ using Ziroh.Migration.MigrationIO;
 
 namespace Migration.Common
 {
-    public class CloudMigration
+    public class CloudMigration : MigrationResource
     {
-        private string TransactionFilePath = null;
         private ICloudServiceIO cloudService = null;
         private Queue<DirectoryBlock> queue = null;
+        private bool DownloadCompleteStatus = true;
 
         public CloudMigration(ICloudServiceIO cloudService)
         {
@@ -27,9 +27,11 @@ namespace Migration.Common
             {
                 TransactionFile logFile = new TransactionFile();
                 DirectoryBlock toDownloadBlock = logFile.Deserialize();
-                DownloadCloudDirectory downloadDirectory = new DownloadCloudDirectory(directoryBlock, "C:\\CloudFiles\\", cloudService);
+                DownloadCloudDirectory downloadDirectory = new DownloadCloudDirectory(toDownloadBlock, "C:\\CloudFiles\\", cloudService);
                 downloadDirectory.DownloadAsync();
                 CleanUpTransactionFile();
+                if (DownloadCompleteStatus == true)
+                    System.IO.File.Delete(TransactionFilePath);
             }           
             return result;
         }
@@ -54,15 +56,24 @@ namespace Migration.Common
                 {
                     foreach(var directory in currentDirectory.SubDirectories)
                     {
-                        if (directory.DownloadStatus)
-                            currentDirectory.SubDirectories.Remove(directory);
-                        else
+                        if (directory.DownloadStatus == false)
+                        {
+                            DownloadCompleteStatus = false;
+                            break;
+                        }
+                        else                       
                             queue.Enqueue(directory);
-                    }
-                    foreach (var file in currentDirectory.Files)
+                    }                 
+                }
+                if(currentDirectory.Files != null)
+                {
+                    foreach(var file in currentDirectory.Files)
                     {
-                        if (file.DownloadStatus)
-                            currentDirectory.Files.Remove(file);
+                        if(file.DownloadStatus == false)
+                        {
+                            DownloadCompleteStatus = false;
+                            break;
+                        }
                     }
                 }
             }

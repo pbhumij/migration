@@ -12,14 +12,15 @@ namespace Ziroh.Migration.MigrationIO
 {
     public class TransactionFile : MigrationResource
     {
+        Object thisLock = new object();
         public void Create(DirectoryBlock directoryBlock)
         {
             try
             {
                 DataContractJsonSerializer serialize = new DataContractJsonSerializer(typeof(DirectoryBlock));
-                lock (new object())
+                lock (thisLock)
                 {
-                    using (FileStream stream = new FileStream(TransactionFilePath, FileMode.OpenOrCreate))
+                    using (FileStream stream = new FileStream(TransactionFilePath, FileMode.Create))
                     {
                         serialize.WriteObject(stream, directoryBlock);
                         stream.Flush();

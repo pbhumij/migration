@@ -13,8 +13,8 @@ namespace Migration.Common
         void GetFiles(DirectoryBlock parentDirectory);
         string GetRootId();
         string CreateDirectory(string destinationDirectoryId, string newDirectoryName);
-        void DownloadFile(FileBlock file, string localPath);
-        bool UploadFile(FileBlock file, string destinationPath = null);
+        void DownloadCloudFile(FileBlock file, string localPath);
+        bool UploadCloudFile(FileBlock file, string destinationPath = null);
         long GetTotalSpace();
         long GetUsedSpace();
     }

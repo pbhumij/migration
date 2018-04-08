@@ -215,7 +215,7 @@ namespace RackSpaceClassLibrary
             client.EnableCDNOnContainer("ostorCloudTest1", false);
         }
 
-        public bool UploadFile(FileBlock file, string destinationPath = null)
+        public bool UploadCloudFile(FileBlock file, string destinationPath = null)
         {
             bool status = false;
             try
@@ -241,7 +241,7 @@ namespace RackSpaceClassLibrary
             throw new NotImplementedException();
         }
 
-        public void DownloadFile(FileBlock file, string localPath)
+        public void DownloadCloudFile(FileBlock file, string localPath)
         {
             using (var outStream = new FileStream(localPath+file.path, FileMode.OpenOrCreate))
             {

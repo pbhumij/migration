@@ -75,7 +75,7 @@ namespace Migration.Common
                             Name = file.Name,
                             Parent = new List<string> { currentDirectory.id}
                         };
-                        cloudService.UploadFile(newFile, file.FullName);
+                        cloudService.UploadCloudFile(newFile, file.FullName);
                     }
                 }
                 Task.WaitAll(tasks.ToArray());

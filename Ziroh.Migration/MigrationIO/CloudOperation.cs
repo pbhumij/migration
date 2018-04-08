@@ -92,7 +92,7 @@ namespace Migration.Common
 
       
 
-        public FileDownloadResult DownloadFile(string cloudfileId, string localPath, FileBlock file = null)
+        public FileDownloadResult DownloadCloudFile(string cloudfileId, string localPath, FileBlock file = null)
         {
             try
             {
@@ -101,7 +101,7 @@ namespace Migration.Common
                 {
                     id = cloudfileId,
                 };
-                Task task = Task.Run(() => cloudService.DownloadFile(newFile, localPath));
+                Task task = Task.Run(() => cloudService.DownloadCloudFile(newFile, localPath));
                 task.Wait();
                 result.status = true;
                 return result;
@@ -112,7 +112,7 @@ namespace Migration.Common
             }
         }
 
-        public FileUploadResult UploadFile(string filePath, string destinationDirectoryId)
+        public FileUploadResult UploadCloudFile(string filePath, string destinationDirectoryId)
         {
             FileUploadResult result = new FileUploadResult();
             FileInfo info = new FileInfo(filePath);
@@ -124,7 +124,7 @@ namespace Migration.Common
                 path = filePath,
                 mimeType = GetMimeType(info),
             };
-            cloudService.UploadFile(file);
+            cloudService.UploadCloudFile(file);
             result.status = true;
             return result;
         }
@@ -152,7 +152,7 @@ namespace Migration.Common
             return rootId;
         }
 
-        public DirectoryUploadResult UploadDirectory(string localDirectoryPath, string destinationDirectoryId)
+        public DirectoryUploadResult UploadCloudDirectory(string localDirectoryPath, string destinationDirectoryId)
         {
             DirectoryUploadResult result = new DirectoryUploadResult(cloudService, localDirectoryPath, destinationDirectoryId);
             var response = result.UploadDirectory();
@@ -173,7 +173,7 @@ namespace Migration.Common
             return result;
         }
 
-        public DownloadCloudDirectory DownloadDirectory(string cloudDirectoryId, string localPath)
+        public DownloadCloudDirectory DownloadCloudDirectory(string cloudDirectoryId, string localPath)
         {
             throw new NotImplementedException();
         }

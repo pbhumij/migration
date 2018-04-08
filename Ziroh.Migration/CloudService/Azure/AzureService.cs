@@ -232,7 +232,7 @@ namespace Migration.CloudService.Azure
             throw new NotImplementedException();
         }
 
-        public bool UploadFile(FileBlock file, string destintationPath = null)
+        public bool UploadCloudFile(FileBlock file, string destintationPath = null)
         {
             bool status = false;
             try
@@ -261,7 +261,7 @@ namespace Migration.CloudService.Azure
             throw new NotImplementedException();
         }
 
-        public void DownloadFile(FileBlock file, string localPath)
+        public void DownloadCloudFile(FileBlock file, string localPath)
         {
             try
             {

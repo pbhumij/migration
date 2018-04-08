@@ -278,7 +278,7 @@ namespace Migration.CloudService.GoogleDriveService
             }
         }
 
-        public bool UploadFile(FileBlock file, string destinationPath = null)
+        public bool UploadCloudFile(FileBlock file, string destinationPath = null)
         {
             bool status = false;
             try
@@ -317,7 +317,7 @@ namespace Migration.CloudService.GoogleDriveService
             return null;
         }
 
-        public void DownloadFile(FileBlock file, string localPath)
+        public void DownloadCloudFile(FileBlock file, string localPath)
         {
             try
             {

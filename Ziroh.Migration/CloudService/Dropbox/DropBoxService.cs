@@ -339,7 +339,7 @@ namespace Migration.CloudService.DropboxService
             }
         }
 
-        public bool UploadFile(FileBlock file, string destinationPath = null)
+        public bool UploadCloudFile(FileBlock file, string destinationPath = null)
         {
             bool status = false;
             try
@@ -363,7 +363,7 @@ namespace Migration.CloudService.DropboxService
             throw new NotImplementedException();
         }
 
-        public void DownloadFile(FileBlock file, string localPath)
+        public void DownloadCloudFile(FileBlock file, string localPath)
         {
             using (var client = DropBoxClient.GetClient())
             {

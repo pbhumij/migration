@@ -36,12 +36,12 @@ namespace Migration.Common
         {
             if (queue.Count == 0)
                 return;
-            while(queue.Count > 0)
+            while (queue.Count > 0)
             {
                 var currentDirectory = queue.Dequeue();
                 if (currentDirectory.SubDirectories != null)
                 {
-                    DownloadDirectory(currentDirectory.SubDirectories);                    
+                    DownloadDirectory(currentDirectory.SubDirectories);
                 }
                 if (currentDirectory.Files != null)
                 {
@@ -56,13 +56,16 @@ namespace Migration.Common
             List<Task> downloadFilesTask = new List<Task>();
             foreach (var file in files)
             {
-                downloadFilesTask.Add(Task.Run(() => 
+                if(file.DownloadStatus == false)
                 {
-                    cloudService.DownloadFile(file, toDownloadDirectoryPath);
-                    file.DownloadStatus = true;
-                    TransactionFile transactionFile = new TransactionFile();
-                    transactionFile.Create(directory);
-                }));
+                    downloadFilesTask.Add(Task.Run(() =>
+                    {
+                        cloudService.DownloadCloudFile(file, toDownloadDirectoryPath);
+                        file.DownloadStatus = true;
+                        TransactionFile transactionFile = new TransactionFile();
+                        transactionFile.Create(directory);
+                    }));
+                }
             }
             Task.WaitAll(downloadFilesTask.ToArray());
         }
@@ -72,17 +75,17 @@ namespace Migration.Common
             List<Task> downloadDirectoriesTask = new List<Task>();
             foreach (var subDirectory in subDirectories)
             {
-                downloadDirectoriesTask.Add(Task.Run(() =>
+                if(subDirectory.DownloadStatus == false)
                 {
-                    lock (new object())
+                    downloadDirectoriesTask.Add(Task.Run(() =>
                     {
                         System.IO.Directory.CreateDirectory(toDownloadDirectoryPath + subDirectory.path);
                         subDirectory.DownloadStatus = true;
                         queue.Enqueue(subDirectory);
                         TransactionFile transactionFile = new TransactionFile();
                         transactionFile.Create(directory);
-                    }
-                }));
+                    }));
+                }
             }
             Task.WaitAll(downloadDirectoriesTask.ToArray());
         }

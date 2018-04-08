@@ -880,7 +880,7 @@ namespace Migration.CloudService.AmazonS3
             return status;
         }
 
-        public bool UploadFile(FileBlock file, string destinationPath = null)
+        public bool UploadCloudFile(FileBlock file, string destinationPath = null)
         {
             bool status = false;
             using (var client = S3Credential.GetClient())
@@ -901,7 +901,7 @@ namespace Migration.CloudService.AmazonS3
             return status;
         }
 
-        public void DownloadFile(FileBlock file, string localPath)
+        public void DownloadCloudFile(FileBlock file, string localPath)
         {
             using (AmazonS3Client client = S3Credential.GetClient())
             {

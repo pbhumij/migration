@@ -15,11 +15,11 @@ namespace Migration.Common
     {
         CloudStructure GetCloudRootStructure();
         MigrationResult MigrateToOstor(DirectoryBlock directoryBlock, ICloudServiceIO cloudService);
-        DownloadCloudDirectory DownloadDirectory(string cloudDirectoryId, string localPath);
-        FileDownloadResult DownloadFile(string cloudFileId, string localPath, FileBlock file = null);
-        DirectoryUploadResult UploadDirectory(string localDirectoryPath, string destinationDirectoryId);
+        DownloadCloudDirectory DownloadCloudDirectory(string cloudDirectoryId, string localPath);
+        FileDownloadResult DownloadCloudFile(string cloudFileId, string localPath, FileBlock file = null);
+        DirectoryUploadResult UploadCloudDirectory(string localDirectoryPath, string destinationDirectoryId);
         CloudCreateDirectoryResult CreateDirectory(string directoryName = null, string destinationDirectoryId = null, string relativePath = null);
-        FileUploadResult UploadFile(string filePath, string destinationDirectoryId);
+        FileUploadResult UploadCloudFile(string filePath, string destinationDirectoryId);
         StorageQuota GetStorageQuota();
         string GetRootId();
     }
